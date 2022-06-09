@@ -19,7 +19,7 @@
       <el-table-column prop="tmName" label="品牌名称" width="width">
       </el-table-column>
       <el-table-column prop="logoUrl" label="品牌logo" width="width">
-        <template slot-scope="{ row, $index }">
+        <template v-slot="{ row, $index }">
           <el-image
             style="width: 60px; height: 60px"
             :src="row.logoUrl"
@@ -29,7 +29,7 @@
         </template>
       </el-table-column>
       <el-table-column prop="operation" label="操作" width="width">
-        <template slot-scope="{ row, $index }">
+        <template v-slot="{ row, $index }">
           <el-button
             type="warning"
             icon="el-icon-edit"

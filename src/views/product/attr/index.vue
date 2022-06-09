@@ -22,7 +22,7 @@
         <el-table-column prop="attrName" label="属性名称" width="100">
         </el-table-column>
         <el-table-column prop="prop" label="属性值列表" resizable>
-          <template slot-scope="{ row, $index }">
+          <template v-slot="{ row, $index }">
             <el-tag
               type="success"
               v-for="attr in row.attrValueList"
@@ -38,7 +38,7 @@
           width="150"
           align="center"
         >
-          <template slot-scope="{ row, $index }">
+          <template v-slot="{ row, $index }">
             <el-button
               size="mini"
               type="warning"
@@ -86,7 +86,7 @@
           <el-table-column type="index" label="序号" width="80" align="center">
           </el-table-column>
           <el-table-column label="属性值名称" width="width">
-            <template slot-scope="{ row, $index }">
+            <template v-slot="{ row, $index }">
               <el-input
                 v-if="row.flag"
                 @blur="toViewMode(row)"
@@ -101,7 +101,7 @@
             </template>
           </el-table-column>
           <el-table-column label="操作" width="width" align="center">
-            <template slot-scope="{ row, $index }">
+            <template v-slot="{ row, $index }">
               <el-popconfirm
                 :title="`确定删除 ${row.valueName} 吗？`"
                 @onConfirm="deleteAttrValue($index)"
