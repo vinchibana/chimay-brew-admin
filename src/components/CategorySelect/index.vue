@@ -6,6 +6,7 @@
           placeholder="请选择"
           v-model="catForm.category1Id"
           @change="handleCat1"
+          :disabled="show"
         >
           <el-option
             v-for="cat1 in cat1List"
@@ -21,6 +22,7 @@
           placeholder="请选择"
           v-model="catForm.category2Id"
           @change="handleCat2"
+          :disabled="show"
         >
           <el-option
             v-for="cat2 in cat2List"
@@ -36,6 +38,7 @@
           placeholder="请选择"
           v-model="catForm.category3Id"
           @change="handleCat3"
+          :disabled="show"
         >
           <el-option
             v-for="cat3 in cat3List"
@@ -67,6 +70,7 @@ export default {
       },
     };
   },
+  props: ["show"],
   mounted() {
     this.getCategory1List();
   },
