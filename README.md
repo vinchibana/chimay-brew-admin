@@ -1,4 +1,3 @@
-# vue-admin-template
+# chimay-brew-admin
 
-> A minimal vue admin template with Element UI & axios & iconfont & permission control & lint
-
+在线电商 Web App (SPA) 后台管理部分 ，Vue + Vuex + Vue Router + Element UI + Webpack
