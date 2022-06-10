@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-card style="margin: 20px 0">
-      <CategorySelect @getCategoryId="getCategoryId" :show="!isShow" />
+      <CategorySelect @getCategoryId="getCategoryId" :show="scene != 0" />
     </el-card>
     <el-card>
       <div v-show="scene == 0">
@@ -10,6 +10,7 @@
           icon="el-icon-plus"
           style="margin: 15px 0"
           :disabled="!category3Id"
+          @click="addSpu"
           >添加SPU</el-button
         >
         <el-table style="width: 100%" :data="spuList" border>
@@ -53,6 +54,7 @@
                   type="warning"
                   icon="el-icon-edit"
                   size="mini"
+                  @click="updateSpu(row)"
                 ></el-button>
               </el-tooltip>
               <el-tooltip
@@ -67,18 +69,19 @@
                   size="mini"
                 ></el-button>
               </el-tooltip>
-              <el-tooltip
-                class="item"
-                effect="dark"
-                content="删除"
-                placement="top"
+
+              <el-popconfirm
+                title="确定删除吗？"
+                @onConfirm="deleteSpu(row)"
+                style="margin: 0 10px"
               >
                 <el-button
                   type="danger"
                   icon="el-icon-delete"
                   size="mini"
+                  slot="reference"
                 ></el-button>
-              </el-tooltip>
+              </el-popconfirm>
             </template>
           </el-table-column>
         </el-table>
@@ -96,7 +99,11 @@
         >
         </el-pagination>
       </div>
-      <SpuForm v-show="scene == 1"></SpuForm>
+      <SpuForm
+        v-show="scene == 1"
+        @changeScene="changeScene"
+        ref="spuForm"
+      ></SpuForm>
       <SkuForm v-show="scene == 2"></SkuForm>
     </el-card>
   </div>
@@ -116,7 +123,6 @@ export default {
       category1Id: "",
       category2Id: "",
       category3Id: "",
-      isShow: true,
 
       page: 1,
       limit: 5,
@@ -159,9 +165,38 @@ export default {
       this.getSpuList();
     },
     handleCurrentChange(page) {
-      console.log(page);
       this.page = page;
       this.getSpuList();
+    },
+
+    // 切换展示、添加、修改 三个场景
+    changeScene({ scene, flag }) {
+      this.scene = scene;
+      if (flag == "update") {
+        this.getSpuList(this.page);
+      } else {
+        this.getSpuList(1);
+      }
+    },
+
+    // 通知子组件发请求初始化 spu 展示数据
+    updateSpu(row) {
+      this.scene = 1;
+      this.$refs.spuForm.initSpuData(row);
+    },
+    addSpu() {
+      this.scene = 1;
+      this.$refs.spuForm.addSpuData(this.category3Id);
+    },
+    async deleteSpu(row) {
+      let result = await this.$API.spu.reqDelSpu(row.id);
+      if (result.code == 200) {
+        this.$message.success("删除成功");
+        await this.getSpuList(
+          // spu个数大于1，删除后停留在当前页；spu小于1，删除后跳转到上一页
+          this.spuList.length > 1 ? this.page : this.page - 1
+        );
+      }
     },
   },
 };
