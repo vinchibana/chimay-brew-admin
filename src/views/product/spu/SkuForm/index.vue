@@ -32,7 +32,7 @@
         <el-form-item label="平台属性">
           <el-form :inline="true" ref="form" label-width="80px">
             <el-form-item
-              v-for="attr in attrInfoList"
+              v-for="(attr, index) in attrInfoList"
               :label="attr.attrName"
               :key="attr.id"
             >
@@ -40,7 +40,7 @@
               <el-select v-model="attr.attrIdAndValueId">
                 <el-option
                   :value="`${attr.id}:${attrValue.id}`"
-                  v-for="attrValue in attr.attrValueList"
+                  v-for="(attrValue, index) in attr.attrValueList"
                   :key="attrValue.id"
                   :label="attrValue.valueName"
                 ></el-option>
@@ -52,13 +52,15 @@
         <el-form-item label="销售属性">
           <el-form :inline="true" ref="form" label-width="80px">
             <el-form-item
-              v-for="saleAttr in spuSaleAttrList"
+              v-for="(saleAttr, index) in spuSaleAttrList"
               :label="saleAttr.saleAttrName"
               :key="saleAttr.id"
             >
               <el-select v-model="saleAttr.saleAttrIdAndValueId">
                 <el-option
-                  v-for="saleAttrValue in saleAttr.spuSaleAttrValueList"
+                  v-for="(
+                    saleAttrValue, index
+                  ) in saleAttr.spuSaleAttrValueList"
                   :key="saleAttrValue.id"
                   :value="`${saleAttr.id}:${saleAttrValue.id}`"
                   :label="saleAttrValue.saleAttrValueName"
@@ -171,7 +173,7 @@ export default {
       this.skuInfo.spuId = spu.id;
       this.skuInfo.tmId = spu.tmId;
 
-      let result = await this.$API.sku.reqSpuImageList(spu.id);
+      let result = await this.$API.spu.reqImgList(spu.id);
       if (result.code == 200) {
         let list = result.data;
         list.forEach((item) => {
@@ -180,11 +182,11 @@ export default {
         this.spuImageList = list;
       }
 
-      let result1 = await this.$API.sku.reqSpuSaleAttrList(spu.id);
+      let result1 = await this.$API.spu.reqSpuSaleAttrList(spu.id);
       if (result.code == 200) {
         this.spuSaleAttrList = result1.data;
       }
-      let result2 = await this.$API.sku.reqAttrInfoList(
+      let result2 = await this.$API.spu.reqAttrInfoList(
         category1Id,
         category2Id,
         spu.category3Id
@@ -231,7 +233,7 @@ export default {
           spuImageId: item.id,
         };
       });
-      let result = await this.$API.sku.reqAddSku(skuInfo);
+      let result = await this.$API.spu.reqAddSku(skuInfo);
       if (result.code == 200) {
         this.$message.success("添加 SKU 成功");
         this.$emit("changeScenes", 0);

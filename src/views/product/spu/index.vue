@@ -114,27 +114,27 @@
     </el-card>
 
     <el-dialog
-      :title="`${spu.spuName}的列表`"
+      :title="`${spu.spuName} 的 SKU 列表`"
       :visible.sync="dialogTableVisible"
       :before-close="closeDialog"
     >
-      <el-table :data="skuList" v-loading="loading">
+      <el-table :data="skuList" v-loading="loading" width="100%">
         <el-table-column
           prop="skuName"
           label="名称"
-          width="600"
+          width="width"
         ></el-table-column>
         <el-table-column
           prop="price"
           label="价格"
-          width="200"
+          width="100px"
         ></el-table-column>
         <el-table-column
           prop="weight"
           label="重量"
-          width="200"
+          width="50px"
         ></el-table-column>
-        <el-table-column label="默认图片">
+        <el-table-column label="默认图片" align="center" width="120px">
           <template v-slot="{ row, $index }">
             <img :src="row.skuDefaultImg" alt="" style="width: 90px" />
           </template>
@@ -247,11 +247,12 @@ export default {
       this.scene = scene;
     },
 
-    handleDialog(spu) {
+    async handleDialog(spu) {
       this.spu = spu;
       this.dialogTableVisible = true;
-      let result = this.$API.spu.reqSkuList(spu.id);
+      let result = await this.$API.spu.reqSkuList(spu.id);
       if (result.code == 200) {
+        this.loading = false;
         this.skuList = result.data;
       }
     },
