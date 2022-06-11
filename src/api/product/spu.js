@@ -40,3 +40,6 @@ export const addOrUpdateSpu = (spuInfo) => {
 
 export const reqDelSpu = (spuId) =>
   request({ url: `/admin/product/deleteSpu/${spuId}`, method: "delete" });
+
+export const reqSkuList = (spuId) =>
+  request({ url: `/admin/product/findBySpuId/${spuId}`, method: "get" });

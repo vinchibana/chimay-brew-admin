@@ -35,13 +35,14 @@
               <el-tooltip
                 class="item"
                 effect="dark"
-                content="添加"
+                content="添加SKU"
                 placement="top"
               >
                 <el-button
                   type="success"
                   icon="el-icon-plus"
                   size="mini"
+                  @click="addSku(row)"
                 ></el-button>
               </el-tooltip>
               <el-tooltip
@@ -67,6 +68,7 @@
                   type="info"
                   icon="el-icon-info"
                   size="mini"
+                  @click="handleDialog(row)"
                 ></el-button>
               </el-tooltip>
 
@@ -104,8 +106,41 @@
         @changeScene="changeScene"
         ref="spuForm"
       ></SpuForm>
-      <SkuForm v-show="scene == 2"></SkuForm>
+      <SkuForm
+        ref="skuForm"
+        v-show="scene == 2"
+        @changeScene="changeScenes"
+      ></SkuForm>
     </el-card>
+
+    <el-dialog
+      :title="`${spu.spuName}的列表`"
+      :visible.sync="dialogTableVisible"
+      :before-close="closeDialog"
+    >
+      <el-table :data="skuList" v-loading="loading">
+        <el-table-column
+          prop="skuName"
+          label="名称"
+          width="600"
+        ></el-table-column>
+        <el-table-column
+          prop="price"
+          label="价格"
+          width="200"
+        ></el-table-column>
+        <el-table-column
+          prop="weight"
+          label="重量"
+          width="200"
+        ></el-table-column>
+        <el-table-column label="默认图片">
+          <template v-slot="{ row, $index }">
+            <img :src="row.skuDefaultImg" alt="" style="width: 90px" />
+          </template>
+        </el-table-column>
+      </el-table>
+    </el-dialog>
   </div>
 </template>
 
@@ -131,6 +166,10 @@ export default {
 
       // 0：展示SPU列表数据 1：添加修改SPU 2：添加SKu
       scene: 0,
+      dialogTableVisible: false,
+      spu: {},
+      skuList: [],
+      loading: true,
     };
   },
   mounted() {
@@ -197,6 +236,29 @@ export default {
           this.spuList.length > 1 ? this.page : this.page - 1
         );
       }
+    },
+
+    addSku(row) {
+      this.scene = 2;
+      this.$refs.skuForm.getSkuInfo(this.category1Id, this.category2Id, row);
+    },
+
+    changeScenes(scene) {
+      this.scene = scene;
+    },
+
+    handleDialog(spu) {
+      this.spu = spu;
+      this.dialogTableVisible = true;
+      let result = this.$API.spu.reqSkuList(spu.id);
+      if (result.code == 200) {
+        this.skuList = result.data;
+      }
+    },
+    closeDialog(done) {
+      this.loading = true;
+      this.skuList = [];
+      done();
     },
   },
 };

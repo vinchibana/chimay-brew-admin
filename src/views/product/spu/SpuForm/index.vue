@@ -7,7 +7,7 @@
 
       <!-- 品牌table，发请求获得 -->
       <el-form-item label="品牌">
-        <el-select placeholder="请选择品牌" v-model="spuInfo.tmId">
+        <el-select v-model="spuInfo.tmId">
           <el-option
             v-for="tradeMark in tradeMarkList"
             :key="tradeMark.id"
@@ -88,7 +88,7 @@
                 :key="index"
                 v-for="(tag, index) in row.spuSaleAttrValueList"
                 closable
-                :disable-transitions="false"
+                :disable-transitions="true"
                 @close="row.spuSaleAttrValueList.splice(index, 1)"
               >
                 {{ tag.saleAttrValueName }}
@@ -127,7 +127,7 @@
       </el-form-item>
       <el-form-item prop="prop" label="操作" width="width">
         <el-button type="primary" @click="addOrUpdateSpu">保存</el-button>
-        <el-button type="primary" @click="cancel">取消</el-button>
+        <el-button @click="cancel">取消</el-button>
       </el-form-item>
     </el-form>
   </div>

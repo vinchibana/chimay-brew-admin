@@ -1,10 +1,13 @@
 <template>
-  <div>sku</div>
+  <div>
+
+  </div>
 </template>
 
 <script>
 export default {
   name: "Sku",
+
 };
 </script>
 
