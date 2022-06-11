@@ -109,7 +109,7 @@
       <SkuForm
         ref="skuForm"
         v-show="scene == 2"
-        @changeScene="changeScenes"
+        @changeScenes="changeScenes"
       ></SkuForm>
     </el-card>
 

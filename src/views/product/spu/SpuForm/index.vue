@@ -99,7 +99,6 @@
                 v-model="row.inputValue"
                 ref="saveTagInput"
                 size="small"
-                @keyup.enter.native="handleInputConfirm(row)"
                 @blur="handleInputConfirm(row)"
               >
               </el-input>
