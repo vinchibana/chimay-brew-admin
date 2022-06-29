@@ -13,6 +13,6 @@ module.exports = (req, res) => {
   createProxyMiddleware({
     target,
     changeOrigin: true,
-    // pathRewrite: { "^/dev-api": "" },
+    pathRewrite: { "^/dev-api": "" },
   })(req, res);
 };
