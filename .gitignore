@@ -16,3 +16,6 @@ tests/**/coverage/
 *.njsproj
 *.sln
 .vercel
+
+# Local Netlify folder
+.netlify
